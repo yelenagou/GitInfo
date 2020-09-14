@@ -17,4 +17,11 @@ git merge-base new_branch master
 **Cherry picking**
 <p>making copies of commits into various branches</p>
 
+```bash
+git log --oneline
+git log branch_name --oneline
+git checkout branch_name
+git cherry-pick sha
+```
+
 
