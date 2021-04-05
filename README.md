@@ -29,4 +29,11 @@ http://git-school.github.io/visualizing-git/
  `git stash`
  `git stash show`
  `git stash pop`
+### Merging master branch into working branch
+````git
+git checkout feature1
+git rebase master
+````
+> Manage all conflicts that arise. When you get to the commits with the bugfixes (already in master), Git will say that there were no changes and that maybe they were already applied. You then continue the rebase (while skipping the commits already in master) with
+
 
