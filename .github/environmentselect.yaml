@@ -1,1 +1,35 @@
+name: PostgreSQL for GitHub Actions
+
+on:
+  workflow_dispatch:
+    inputs:
+      targetEnvironment:
+        description: Which environment to run against (prod | nonprod)
+        required: false
+        type: choice
+        default: nonprod
+        options:
+          - nonprod
+          - prod
+jobs:
+  build:
+    runs-on: onprem-linux
+    steps:
+      - uses: actions/checkout@v4
+      - name: login azure
+        run: |
+          pwd
+          ls
+          chmod 755 "./sql/data.sql"
+      - uses: azure/login@v1    
+        env:
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      - uses: azure/postgresql@v1
+        with:
+          server-name: ob-tst-db-delete-nonprod.postgres.database.azure.com
+          connection-string: "host=${{ secrets.DB_HOST_POSTGRES }} dbname=${{ secrets.DB_DATABASE_POSTGRES }} user=${{ secrets.DB_USER_POSTGRES }} password='${{ secrets.DB_PASSWORD_POSTGRES }}' port=${{ secrets.DB_PORT_POSTGRES }}"
+          plsql-file: "data.sql"
 
